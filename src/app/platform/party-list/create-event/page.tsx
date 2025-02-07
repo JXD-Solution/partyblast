@@ -4,11 +4,7 @@ import CreateEventForm from "@/features/create-package/components/CreateEventFor
 import HomePageContainer from "@/app/layout";
 
 const CreateEventPage: React.FC = () => {
-  return (
-    <HomePageContainer>
-      <CreateEventForm isCreatingEvent={true} /> {/* Pass props to your form */}
-    </HomePageContainer>
-  );
+  return <CreateEventForm isCreatingEvent={true} />;
 };
 
 export default CreateEventPage;
