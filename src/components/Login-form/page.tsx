@@ -2,7 +2,10 @@
 
 import React from "react";
 import { TextField, Button, Typography, Box, Container } from "@mui/material";
-import CreatePackage from "@/features/create-package/components/CreatePackage";
+import CreatePackage from "@/features/create-package/components/CreateEventForm";
+import HeaderPage from "@/features/home-page/components/HeaderPage";
+import SideBar from "@/features/home-page/components/SideBar";
+import HomePage from "@/features/home-page/components/HeaderPage";
 
 type LoginFormProps = {
   username?: string;
@@ -20,6 +23,7 @@ const LoginForm = ({
   onSubmit,
 }: LoginFormProps) => {
   return (
+    <SideBar />
     // <Container maxWidth="xs" sx={{ paddingTop: 5 }}>
     //   <Box
     //     sx={{
@@ -70,7 +74,6 @@ const LoginForm = ({
     //     </form>
     //   </Box>
     // </Container>
-    <CreatePackage></CreatePackage>
   );
 };
 
