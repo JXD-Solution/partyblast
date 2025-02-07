@@ -8,18 +8,17 @@ import HomePageContainer from "@/features/home-page/components/HomePageContainer
 const Page = () => {
   return (
     <Router>
-      <HomePageContainer />
       <Box component="main" sx={{ flexGrow: 1, padding: 3, marginLeft: 26 }}>
-        <Routes>
+        {/* <Routes>
           <Route
-            path="/platform/party-list/create-event"
+            path="/platform/party-list/create-events"
             element={<CreatePackage isCreatingEvent />}
           />
           <Route
-            path="/platform/party-list/edit-event"
+            path="/platform/party-list/edit-events"
             element={<CreatePackage />}
           />
-        </Routes>
+        </Routes> */}
       </Box>
     </Router>
   );

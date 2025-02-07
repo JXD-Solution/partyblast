@@ -1,5 +1,7 @@
+"use client"; // add this at the top because this is a client component
+
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation"; // useRouter instead of useNavigate
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,26 +12,24 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import HeaderPage from "./HeaderPage";
 import { allRoutes } from "@/config/routes";
 
 export const drawerWidth = 240;
 
-const HomePageContainer = () => {
-  const navigate = useNavigate();
+const HomePageContainer = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter(); // useRouter from next/navigation
 
   const handleCreateEventClick = () => {
-    navigate(allRoutes.platform.partyList.createEvent);
+    router.push(allRoutes.platform.partyList.createEvent); // router.push instead of navigate
   };
 
   const handleEditEventClick = () => {
-    navigate(allRoutes.platform.partyList.editEvent);
+    router.push(allRoutes.platform.partyList.editEvent);
   };
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <HeaderPage />
       <Drawer
         variant="permanent"
         sx={{
@@ -64,6 +64,7 @@ const HomePageContainer = () => {
         </Box>
       </Drawer>
 
+      {/* main content */}
       <Box
         component="main"
         sx={{
@@ -72,7 +73,9 @@ const HomePageContainer = () => {
           marginLeft: drawerWidth,
           overflowY: "auto",
         }}
-      />
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

@@ -91,7 +91,7 @@ const CreatePackage = ({
     setErrors((prev) => ({ ...prev, guestEmail: "" }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { subject, customerName, packageType, dateTime, place } = formData;
     let valid = true;
     let newErrors = { ...errors };
@@ -129,8 +129,24 @@ const CreatePackage = ({
         dateTime,
         place,
       });
-      if (onSubmit) onSubmit();
-      handleClear();
+
+      try {
+        const response = await fetch("create-event/api", {
+          method: "POST",
+          body: JSON.stringify({ formData }),
+        });
+
+        if (!response.ok) {
+          throw new Error("failed to submit data");
+        }
+
+        const result = await response.json();
+        console.log("response from server:", result);
+
+        if (onSubmit) onSubmit();
+      } catch (error) {
+        console.error("error submitting form:", error);
+      }
     }
   };
 
@@ -157,7 +173,7 @@ const CreatePackage = ({
   };
 
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box sx={{ marginTop: 8, marginLeft: 30, padding: 3 }}>
       <Typography
         variant="h4"
         sx={{
