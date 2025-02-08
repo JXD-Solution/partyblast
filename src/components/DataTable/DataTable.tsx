@@ -10,29 +10,41 @@ import {
   Checkbox,
   TablePagination,
   Box,
-  Fab,
-  Menu,
-  MenuItem,
-  IconButton,
 } from "@mui/material";
 import SearchToolbar from "./SearchToolbar";
-import AddIcon from "@mui/icons-material/Add";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { mockRow, mockColumns } from "@/mock/eventList";
+import { mockRow, mockColumns } from "@/mock/page";
+import DataTableRowAction from "./DataTableRowAction";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from "@mui/icons-material/Info";
 
-// Column Configuration (from mockColumns)
 const columns = mockColumns;
-
 const initialRows = mockRow;
 
+const menuItems = (rowId: string) => [
+  {
+    label: "Edit",
+    icon: <EditIcon color="primary" />,
+    onClick: () => console.log(`Edit clicked for row ${rowId}`),
+  },
+  {
+    label: "Delete",
+    icon: <DeleteIcon color="error" />,
+    onClick: () => console.log(`Delete clicked for row ${rowId}`),
+    isDisabled: false,
+  },
+  {
+    label: "More Info",
+    icon: <InfoIcon color="primary" />,
+    onClick: () => console.log(`More Info clicked for row ${rowId}`),
+  },
+];
+
 const DataTable = () => {
-  const [selectedRows, setSelectedRows] = React.useState<string[]>([]); // Change to string[] to match `id` type
+  const [selectedRows, setSelectedRows] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [menuRowId, setMenuRowId] = React.useState<string | null>(null);
 
-  // Handle checkbox change
   const handleCheckboxChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     rowId: string
@@ -60,24 +72,6 @@ const DataTable = () => {
     setPage(0);
   };
 
-  const handleMenuClick = (
-    event: React.MouseEvent<HTMLElement>,
-    rowId: string
-  ) => {
-    setAnchorEl(event.currentTarget);
-    setMenuRowId(rowId);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setMenuRowId(null);
-  };
-
-  const handleAction = (action: string) => {
-    console.log(`${action} action for row ${menuRowId}`);
-    handleMenuClose();
-  };
-
   const currentRows = initialRows.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
@@ -95,7 +89,7 @@ const DataTable = () => {
                   <Checkbox
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedRows(currentRows.map((row) => row.id)); // row.id is a string
+                        setSelectedRows(currentRows.map((row) => row.id));
                       } else {
                         setSelectedRows([]);
                       }
@@ -108,12 +102,11 @@ const DataTable = () => {
                   />
                 </TableCell>
                 {columns
-                  .filter((col) => !col.hidden && col.label !== "Actions") // Exclude the "Actions" column from dynamic rendering
+                  .filter((col) => !col.hidden && col.label !== "Actions")
                   .map((col) => (
                     <TableCell key={col.key}>{col.label}</TableCell>
                   ))}
-                <TableCell>Actions</TableCell>{" "}
-                {/* Only render the Actions column once */}
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -121,12 +114,12 @@ const DataTable = () => {
                 <TableRow key={row.id} sx={{ height: 48 }}>
                   <TableCell sx={{ paddingTop: 0, paddingBottom: 0 }}>
                     <Checkbox
-                      checked={selectedRows.includes(row.id)} // row.id is a string
-                      onChange={(e) => handleCheckboxChange(e, row.id)} // Pass string id
+                      checked={selectedRows.includes(row.id)}
+                      onChange={(e) => handleCheckboxChange(e, row.id)}
                     />
                   </TableCell>
                   {columns
-                    .filter((col) => !col?.hidden && col.label !== "Actions") // Exclude the "Actions" column from dynamic rendering
+                    .filter((col) => !col?.hidden && col.label !== "Actions")
                     .map((col) => (
                       <TableCell
                         key={col.key}
@@ -134,30 +127,15 @@ const DataTable = () => {
                         sx={{ paddingTop: 0, paddingBottom: 0 }}
                       >
                         {col.key === "dateTime"
-                          ? new Date(row.dateTime).toLocaleString()
-                          : row[col.key]}{" "}
-                        {/* Use col.key to access row data */}
+                          ? new Date(row.dateTime || "").toLocaleString()
+                          : row[col.key]}
                       </TableCell>
                     ))}
                   <TableCell
-                    align="right"
+                    align="left"
                     sx={{ paddingTop: 0, paddingBottom: 0 }}
                   >
-                    <IconButton onClick={(e) => handleMenuClick(e, row.id)}>
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl) && menuRowId === row.id}
-                      onClose={handleMenuClose}
-                    >
-                      <MenuItem onClick={() => handleAction("Edit")}>
-                        Edit
-                      </MenuItem>
-                      <MenuItem onClick={() => handleAction("Delete")}>
-                        Delete
-                      </MenuItem>
-                    </Menu>
+                    <DataTableRowAction menuItems={menuItems(row.id)} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -174,23 +152,9 @@ const DataTable = () => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
           />
         </Box>
       </Box>
-
-      <Fab
-        color="primary"
-        aria-label="add"
-        size="small"
-        sx={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-        }}
-      >
-        <AddIcon />
-      </Fab>
     </>
   );
 };

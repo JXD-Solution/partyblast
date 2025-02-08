@@ -1,5 +1,4 @@
 import { EventData } from "@/features/create-package";
-
 export const mockRow: EventData[] = [
   {
     id: "1",
@@ -187,7 +186,6 @@ export const mockColumns = [
   { label: "Email Subject", key: "emailSubject", hidden: false },
   { label: "Customer Name", key: "customerName", hidden: false },
   { label: "Package Type", key: "packageType", hidden: false },
-  { label: "Description", key: "description", hidden: false },
   { label: "Date & Time", key: "dateTime", hidden: false },
   { label: "Place", key: "place", hidden: false },
   { label: "Actions", key: "actions", hidden: false },
