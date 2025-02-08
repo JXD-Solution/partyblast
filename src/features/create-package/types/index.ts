@@ -1,5 +1,6 @@
-export type Email = {
-  subject?: string | undefined;
+export type EventData = {
+  id: string;
+  emailSubject?: string | undefined;
   customerName?: string | undefined;
   description?: string | undefined;
   packageType?: string;
