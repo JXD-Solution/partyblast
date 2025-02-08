@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import {
   Table,
@@ -11,12 +12,12 @@ import {
   TablePagination,
   Box,
 } from "@mui/material";
-import SearchToolbar from "./SearchToolbar";
 import { mockRow, mockColumns } from "@/mock/page";
-import DataTableRowAction from "./DataTableRowAction";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
+import { SearchToolbar } from "../SearchToolBar";
+import { DataTableRowAction } from "../DataTableRowAction";
 
 const columns = mockColumns;
 const initialRows = mockRow;
@@ -40,7 +41,7 @@ const menuItems = (rowId: string) => [
   },
 ];
 
-const DataTable = () => {
+export const DataTable = () => {
   const [selectedRows, setSelectedRows] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -80,9 +81,9 @@ const DataTable = () => {
   return (
     <>
       <SearchToolbar />
-      <Box sx={{ width: "100%", padding: 2 }}>
-        <TableContainer component={Paper} sx={{ maxHeight: 555 }}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Box sx={{ width: "100%" }}>
+        <TableContainer component={Paper} sx={{ maxHeight: 530 }}>
+          <Table sx={{ minWidth: 670 }} aria-label="data-table">
             <TableHead>
               <TableRow>
                 <TableCell>
@@ -104,14 +105,16 @@ const DataTable = () => {
                 {columns
                   .filter((col) => !col.hidden && col.label !== "Actions")
                   .map((col) => (
-                    <TableCell key={col.key}>{col.label}</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }} key={col.key}>
+                      {col.label}
+                    </TableCell>
                   ))}
-                <TableCell>Actions</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {currentRows.map((row) => (
-                <TableRow key={row.id} sx={{ height: 48 }}>
+                <TableRow key={row.id} sx={{ height: 30 }}>
                   <TableCell sx={{ paddingTop: 0, paddingBottom: 0 }}>
                     <Checkbox
                       checked={selectedRows.includes(row.id)}
@@ -158,5 +161,3 @@ const DataTable = () => {
     </>
   );
 };
-
-export default DataTable;

@@ -12,7 +12,7 @@ type DataTableRowActionProps = {
 
 const ITEM_HEIGHT = 48;
 
-const DataTableRowAction = ({ menuItems }: DataTableRowActionProps) => {
+export const DataTableRowAction = ({ menuItems }: DataTableRowActionProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -70,5 +70,3 @@ const DataTableRowAction = ({ menuItems }: DataTableRowActionProps) => {
     </div>
   );
 };
-
-export default DataTableRowAction;

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, TextField, Button, AppBar, Toolbar } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 
-const SearchToolbar = () => {
+export const SearchToolbar = () => {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "white" }}>
       <Toolbar
@@ -43,5 +43,3 @@ const SearchToolbar = () => {
     </AppBar>
   );
 };
-
-export default SearchToolbar;

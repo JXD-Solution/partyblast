@@ -1,7 +1,7 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
+import HandshakeIcon from "@mui/icons-material/Handshake";
 const HeaderPage = () => {
   return (
     <AppBar
@@ -12,17 +12,21 @@ const HeaderPage = () => {
       }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography sx={{ color: "#fff" }} variant="h6">
-          Dashboard
-        </Typography>
-        <div>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <HandshakeIcon />
+          <Typography sx={{ color: "#fff", fontWeight: "bold" }} variant="h6">
+            PartyBlast
+          </Typography>
+        </Box>
+
+        <Box>
           <IconButton sx={{ color: "#fff", marginRight: "15px" }}>
             <NotificationsIcon />
           </IconButton>
           <IconButton sx={{ color: "#fff" }}>
             <AccountCircleIcon />
           </IconButton>
-        </div>
+        </Box>
       </Toolbar>
     </AppBar>
   );

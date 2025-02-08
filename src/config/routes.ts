@@ -8,6 +8,7 @@ export const allRoutes = {
       createEvent: "/platform/party-list/create-event",
       editEvent: "/platform/party-list/edit-event",
     },
+    eventManagement: "/platform/event-management",
   },
 };
 
