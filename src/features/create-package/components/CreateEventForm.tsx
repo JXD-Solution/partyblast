@@ -16,10 +16,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { Email } from "../types";
+import { EventData } from "../types";
+import { nanoid } from "nanoid";
 
 type CreatePackageProps = {
-  previousData?: Email;
+  previousData?: EventData;
   onSubmit?: () => void;
   isCreatingEvent?: boolean;
 };
@@ -30,7 +31,8 @@ const CreatePackage = ({
   isCreatingEvent,
 }: CreatePackageProps) => {
   const [formData, setFormData] = useState({
-    subject: previousData?.subject || "",
+    id: previousData?.id || nanoid(),
+    emailSubject: previousData?.emailSubject || "",
     customerName: previousData?.customerName || "",
     description: previousData?.description || "",
     packageType: previousData?.packageType || "",
@@ -42,7 +44,7 @@ const CreatePackage = ({
 
   const [guestEmail, setGuestEmail] = useState("");
   const [errors, setErrors] = useState({
-    subject: "",
+    emailSubject: "",
     customerName: "",
     packageType: "",
     guestEmail: "",
@@ -92,12 +94,13 @@ const CreatePackage = ({
   };
 
   const handleSubmit = () => {
-    const { subject, customerName, packageType, dateTime, place } = formData;
+    const { emailSubject, customerName, packageType, dateTime, place } =
+      formData;
     let valid = true;
-    let newErrors = { ...errors };
+    const newErrors = { ...errors };
 
-    if (!subject) {
-      newErrors.subject = "Please enter a package name";
+    if (!emailSubject) {
+      newErrors.emailSubject = "Please enter a package name";
       valid = false;
     }
     if (!customerName) {
@@ -121,7 +124,8 @@ const CreatePackage = ({
 
     if (valid) {
       console.log({
-        subject,
+        id: formData.id,
+        emailSubject,
         guestEmailList: formData.guestEmailList,
         customerName,
         file: formData.file,
@@ -136,7 +140,8 @@ const CreatePackage = ({
 
   const handleClear = () => {
     setFormData({
-      subject: "",
+      id: nanoid(),
+      emailSubject: "",
       customerName: "",
       description: "",
       packageType: "",
@@ -147,7 +152,7 @@ const CreatePackage = ({
     });
     setGuestEmail("");
     setErrors({
-      subject: "",
+      emailSubject: "",
       customerName: "",
       packageType: "",
       guestEmail: "",
@@ -181,13 +186,13 @@ const CreatePackage = ({
           />
 
           <TextField
-            label="Subject"
-            value={formData.subject}
-            onChange={handleChange("subject")}
+            label="Email Subject"
+            value={formData.emailSubject}
+            onChange={handleChange("emailSubject")}
             fullWidth
             margin="normal"
-            error={Boolean(errors.subject)}
-            helperText={errors.subject}
+            error={Boolean(errors.emailSubject)}
+            helperText={errors.emailSubject}
           />
 
           <TextField
@@ -227,8 +232,10 @@ const CreatePackage = ({
             onChange={handleChange("dateTime")}
             fullWidth
             margin="normal"
-            InputLabelProps={{
-              shrink: true,
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
             }}
             error={Boolean(errors.dateTime)}
             helperText={errors.dateTime}

@@ -9,25 +9,21 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import HeaderPage from "./HeaderPage";
 import { allRoutes } from "@/config/routes";
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 
-export const drawerWidth = 240;
+export const drawerWidth = 215;
 
 const HomePageContainer = () => {
   const navigate = useNavigate();
 
-  const handleCreateEventClick = () => {
-    navigate(allRoutes.platform.partyList.createEvent);
-  };
-
-  const handleEditEventClick = () => {
-    navigate(allRoutes.platform.partyList.editEvent);
+  const handleEventTabClick = () => {
+    navigate(allRoutes.platform.eventManagement);
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", overflow: "hidden" }}>
       <CssBaseline />
       <HeaderPage />
       <Drawer
@@ -45,19 +41,11 @@ const HomePageContainer = () => {
         <Box sx={{ overflow: "auto" }}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={handleCreateEventClick}>
-                <ListItemIcon>
-                  <InboxIcon />
+              <ListItemButton onClick={handleEventTabClick}>
+                <ListItemIcon sx={{ minWidth: "30px" }}>
+                  <EditCalendarIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create Event" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton onClick={handleEditEventClick}>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Edit Event" />
+                <ListItemText primary="Event Management" />
               </ListItemButton>
             </ListItem>
           </List>
@@ -70,7 +58,7 @@ const HomePageContainer = () => {
           flexGrow: 1,
           padding: 3,
           marginLeft: drawerWidth,
-          overflowY: "auto",
+          overflow: "hidden",
         }}
       />
     </Box>

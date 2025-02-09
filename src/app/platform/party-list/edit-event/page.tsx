@@ -1,6 +1,6 @@
-import CreatePackage from "@/features/create-package/components/CreateEventForm";
+import CreateEventForm from "@/features/create-package/components/CreateEventForm";
 
 const Page = () => {
-  return <CreatePackage></CreatePackage>;
+  return <CreateEventForm />;
 };
 export default Page;
