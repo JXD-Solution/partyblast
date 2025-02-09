@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import {
   Table,
@@ -11,38 +10,46 @@ import {
   Checkbox,
   TablePagination,
   Box,
+  Typography,
 } from "@mui/material";
-import { mockRow, mockColumns } from "@/mock/page";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import InfoIcon from "@mui/icons-material/Info";
-import { SearchToolbar } from "../SearchToolBar";
 import { DataTableRowAction } from "../DataTableRowAction";
+import { SearchToolbar } from "../SearchToolBar";
 
-const columns = mockColumns;
-const initialRows = mockRow;
+type Column = {
+  label: string;
+  key: string;
+  hidden: boolean;
+};
 
-const menuItems = (rowId: string) => [
-  {
-    label: "Edit",
-    icon: <EditIcon color="primary" />,
-    onClick: () => console.log(`Edit clicked for row ${rowId}`),
-  },
-  {
-    label: "Delete",
-    icon: <DeleteIcon color="error" />,
-    onClick: () => console.log(`Delete clicked for row ${rowId}`),
-    isDisabled: false,
-  },
-  {
-    label: "More Info",
-    icon: <InfoIcon color="primary" />,
-    onClick: () => console.log(`More Info clicked for row ${rowId}`),
-  },
-];
+type DataTableProps = {
+  data: any[];
+  columns: Column[];
+  rowSelection: string[];
+  setRowSelection: React.Dispatch<React.SetStateAction<string[]>>;
+  menuActions: (
+    rowId: string
+  ) => { label: string; icon: JSX.Element; onClick: () => void }[];
+  totalCount: number;
+  filterValue: string;
+  title: string;
+  handleSearch: (query: string) => void;
+  handleRefresh: () => void;
+  showAddAction: boolean;
+};
 
-export const DataTable = () => {
-  const [selectedRows, setSelectedRows] = React.useState<string[]>([]);
+const DataTable = ({
+  data,
+  columns,
+  rowSelection,
+  setRowSelection,
+  menuActions,
+  totalCount,
+  filterValue,
+  title,
+  handleSearch,
+  handleRefresh,
+  showAddAction,
+}: DataTableProps) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -51,9 +58,9 @@ export const DataTable = () => {
     rowId: string
   ) => {
     if (event.target.checked) {
-      setSelectedRows((prevSelected) => [...prevSelected, rowId]);
+      setRowSelection((prevSelected) => [...prevSelected, rowId]);
     } else {
-      setSelectedRows((prevSelected) =>
+      setRowSelection((prevSelected) =>
         prevSelected.filter((id) => id !== rowId)
       );
     }
@@ -73,14 +80,25 @@ export const DataTable = () => {
     setPage(0);
   };
 
-  const currentRows = initialRows.slice(
+  const currentRows = data.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
 
   return (
     <>
-      <SearchToolbar />
+      <Typography
+        sx={{ fontWeight: "bold", paddingTop: "10px", paddingBottom: "10px" }}
+        variant="h6"
+      >
+        {title}
+      </Typography>
+      <SearchToolbar
+        filterValue={filterValue}
+        onSearch={handleSearch}
+        onRefresh={handleRefresh}
+        showAddAction={showAddAction}
+      />
       <Box sx={{ width: "100%" }}>
         <TableContainer component={Paper} sx={{ maxHeight: 530 }}>
           <Table sx={{ minWidth: 670 }} aria-label="data-table">
@@ -90,15 +108,15 @@ export const DataTable = () => {
                   <Checkbox
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedRows(currentRows.map((row) => row.id));
+                        setRowSelection(currentRows.map((row) => row.id));
                       } else {
-                        setSelectedRows([]);
+                        setRowSelection([]);
                       }
                     }}
-                    checked={selectedRows.length === currentRows.length}
+                    checked={rowSelection.length === currentRows.length}
                     indeterminate={
-                      selectedRows.length > 0 &&
-                      selectedRows.length < currentRows.length
+                      rowSelection.length > 0 &&
+                      rowSelection.length < currentRows.length
                     }
                   />
                 </TableCell>
@@ -117,12 +135,12 @@ export const DataTable = () => {
                 <TableRow key={row.id} sx={{ height: 30 }}>
                   <TableCell sx={{ paddingTop: 0, paddingBottom: 0 }}>
                     <Checkbox
-                      checked={selectedRows.includes(row.id)}
+                      checked={rowSelection.includes(row.id)}
                       onChange={(e) => handleCheckboxChange(e, row.id)}
                     />
                   </TableCell>
                   {columns
-                    .filter((col) => !col?.hidden && col.label !== "Actions")
+                    .filter((col) => !col.hidden && col.label !== "Actions")
                     .map((col) => (
                       <TableCell
                         key={col.key}
@@ -138,7 +156,7 @@ export const DataTable = () => {
                     align="left"
                     sx={{ paddingTop: 0, paddingBottom: 0 }}
                   >
-                    <DataTableRowAction menuItems={menuItems(row.id)} />
+                    <DataTableRowAction menuItems={menuActions(row.id)} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -150,7 +168,7 @@ export const DataTable = () => {
           <TablePagination
             rowsPerPageOptions={[10, 25]}
             component="div"
-            count={initialRows.length}
+            count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -161,3 +179,5 @@ export const DataTable = () => {
     </>
   );
 };
+
+export default DataTable;

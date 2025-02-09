@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export type MenuItemAction = {
+export type MenuActions = {
   label: string;
   icon: ReactNode;
   onClick: () => void;

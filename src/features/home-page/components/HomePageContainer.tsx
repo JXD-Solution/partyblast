@@ -23,7 +23,7 @@ const HomePageContainer = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", overflow: "hidden" }}>
       <CssBaseline />
       <HeaderPage />
       <Drawer
@@ -58,7 +58,7 @@ const HomePageContainer = () => {
           flexGrow: 1,
           padding: 3,
           marginLeft: drawerWidth,
-          overflowY: "auto",
+          overflow: "hidden",
         }}
       />
     </Box>

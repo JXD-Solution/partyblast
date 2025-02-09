@@ -3,11 +3,11 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { MenuItemAction } from "@/types/page";
+import { MenuActions } from "@/types/page";
 import { Typography } from "@mui/material";
 
 type DataTableRowActionProps = {
-  menuItems: MenuItemAction[];
+  menuItems: MenuActions[];
 };
 
 const ITEM_HEIGHT = 48;
